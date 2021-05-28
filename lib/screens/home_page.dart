@@ -76,35 +76,43 @@ class _MyHomePageState extends State<MyHomePage> {
           return Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: ListView.separated(
-                itemCount: articleList.length,
-                separatorBuilder: (_, index) => spacer(20),
-                itemBuilder: (_, index) {
-                  ArticleModel article = articleList[index];
-                  return ListTile(
-                    contentPadding: EdgeInsets.only(top: 15, bottom: 15),
-                    trailing: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: FadeInImage(
-                          placeholder: MemoryImage(kTransparentImage),
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                          image: articleList[index].image),
-                    ),
-                    title: Text(
-                      article.title,
-                      style: titleStyle.copyWith(
-                        fontSize: 15,
+              child: Scrollbar(
+isAlwaysShown: true,
+                              child: ListView.separated(
+                  itemCount: articleList.length,
+                  separatorBuilder: (_, index) => spacer(20),
+                  itemBuilder: (_, index) {
+                    ArticleModel article = articleList[index];
+                    return Card(
+                      color: Colors.grey[900],
+                      margin: EdgeInsets.zero,
+                      child: ListTile(
+
+                               contentPadding: EdgeInsets.all(15),
+                        leading: CircleAvatar(backgroundImage: article.image,backgroundColor: Colors.grey[600],),
+                        trailing: Wrap(
+                              children: [
+                                VerticalDivider(color: Colors.red,),Text(article.publishedAt.substring(0,4),)
+                              ],
+                            
+                          
+                        ),
+                        title: Text(
+                            article.title,
+                            style: titleStyle.copyWith(
+                              fontSize: 15,
+
+                          ),
+                        ),
+                        subtitle: Text(
+                          article.newsSite,
+                          style: titleStyle.copyWith(fontSize: 13,color: Colors.cyan[600]),
+                        ),
+                        
                       ),
-                    ),
-                    subtitle: Text(
-                      article.publishedAt,
-                      style: titleStyle.copyWith(fontSize: 13),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           );
