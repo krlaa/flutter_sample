@@ -1,10 +1,12 @@
-//This is the home page this is stateful widget because the data on the page is dynamically changing and not preset
-import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gitpodflutter/constants/globals.dart';
+import 'package:gitpodflutter/constants/global_widgets.dart';
+import 'package:gitpodflutter/constants/text_styles.dart';
 import 'package:gitpodflutter/models/article_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:gitpodflutter/services/api_service.dart';
+
+//This is the home page this is stateful widget because the data on the page is dynamically changing and not preset
 
 class MyHomePage extends StatefulWidget {
   //boiler plate code don't need to worry
@@ -14,44 +16,39 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Future reponseFromApi;
-  Future<List<ArticleModel>> fetch() async {
-    var response = await http.get(
-        Uri.parse('https://api.spaceflightnewsapi.net/v3/articles?_limit=50'));
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      List list = [];
-
-      jsonDecode(response.body).
-      print(list);
-      return list;
-    } else {
-      return [];
-    }
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    reponseFromApi = fetch();
+    //Calls the api service fetch method which returns Future<List<ArticleModel>>
+    reponseFromApi = SpaceFlightService.fetch();
   }
 
   //build method renders your widgets on to the screen
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //sets background color to hex #121212
-      backgroundColor: Color(0xFF121212),
-      //the app bar is the bar that displays at the top right now it set to transparent but it is needed to show the back button if needed
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      //Column represents a view laid out in a vertical format
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          children: [titleSection('SpaceFlight'), listSection(reponseFromApi)],
+    return SafeArea(
+      child: Scaffold(
+        //sets background color to hex #121212 use the OxFF{hex} format
+        backgroundColor: Color(0xFF121212),
+        //the app bar is the bar that displays at the top right now it set to transparent
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        //Column represents a view laid out in a vertical format
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              titleSection('SpaceFlight'),
+              spacer(20),
+              listSection(reponseFromApi),
+              spacer(20),
+            ],
+          ),
         ),
       ),
     );
@@ -75,13 +72,41 @@ class _MyHomePageState extends State<MyHomePage> {
             child: CircularProgressIndicator(),
           );
         } else {
-          List articleList = snapshot.data;
-
-          return ListView.builder(
-            itemCount: articleList.length,
-            itemBuilder: (context, index) {
-              return Text(articleList[index]);
-            },
+          List<ArticleModel> articleList = snapshot.data;
+          return Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: ListView.separated(
+                itemCount: articleList.length,
+                separatorBuilder: (_, index) => spacer(20),
+                itemBuilder: (_, index) {
+                  ArticleModel article = articleList[index];
+                  return ListTile(
+                    contentPadding: EdgeInsets.only(top: 15, bottom: 15),
+                    trailing: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: FadeInImage(
+                          placeholder: MemoryImage(kTransparentImage),
+                          height: 50,
+                          width: 50,
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                          image: articleList[index].image),
+                    ),
+                    title: Text(
+                      article.title,
+                      style: titleStyle.copyWith(
+                        fontSize: 15,
+                      ),
+                    ),
+                    subtitle: Text(
+                      article.publishedAt,
+                      style: titleStyle.copyWith(fontSize: 13),
+                    ),
+                  );
+                },
+              ),
+            ),
           );
         }
       },
