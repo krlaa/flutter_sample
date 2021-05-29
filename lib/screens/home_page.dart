@@ -107,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 // NOTE: Listviews are unbounded so they need some sort of constraints. In this case above the parent of this is a Expanded widget which exapnds to the rest of the available space
                 child: ListView.separated(
+                  physics: BouncingScrollPhysics(),
                   //Tells the list view how many items it will need to render
                   itemCount: articleList.length,
                   //since this is a ListView.seperated there is a property called seperator builder this is convienient when you dont want to adding padding around the main content widget

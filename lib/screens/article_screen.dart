@@ -3,6 +3,7 @@ import 'package:gitpodflutter/constants/global_colors.dart';
 import 'package:gitpodflutter/constants/global_widgets.dart';
 import 'package:gitpodflutter/constants/text_styles.dart';
 import 'package:gitpodflutter/models/article_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArticleScreen extends StatelessWidget {
   final ArticleModel article;
@@ -65,12 +66,19 @@ class ArticleScreen extends StatelessWidget {
                   maxLines: 5,
                 ),
                 spacer(height: 8),
-                Text(
-                  // NOTE: This is Dart's String interoplation you can embed variables right within strings. The syntax is $variable or ${variable} the later is used when using methods or modifiers
-                  'Source: ${article.newsSite}',
-                  style: whiteRegular(fontSize: 13, color: Colors.cyan[500])
-                      .copyWith(
-                    decoration: TextDecoration.underline,
+                //Gesture detectors allow to add on click functions to widgets that dont have it built in. This opens the field up for many custom widgets
+                GestureDetector(
+                  onTap: () {
+                    //using url launcher pacakge to open up different links
+                    launch(article.url);
+                  },
+                  child: Text(
+                    // NOTE: This is Dart's String interoplation you can embed variables right within strings. The syntax is $variable or ${variable} the later is used when using methods or modifiers
+                    'Source: ${article.newsSite}',
+                    style: whiteRegular(fontSize: 13, color: Colors.cyan[500])
+                        .copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
                 spacer(height: 4),
