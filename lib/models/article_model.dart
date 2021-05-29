@@ -42,6 +42,7 @@ class ArticleModel {
         featured: json['featured'],
         title: json['title'],
         url: json['url'],
+        //Proxy for web because of cors-policy
         image: NetworkImage(
             "${kIsWeb ? 'https://api.codetabs.com/v1/proxy?quest=' : ''}${json['imageUrl']}"),
         newsSite: json['newsSite'],

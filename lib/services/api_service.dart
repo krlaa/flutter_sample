@@ -2,6 +2,7 @@ import 'package:gitpodflutter/models/article_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+//Service class can be expanded on if needed
 class SpaceFlightService {
   static Future<List<ArticleModel>> fetch() async {
     var response = await http.get(
