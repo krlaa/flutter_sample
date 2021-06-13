@@ -1,57 +1,33 @@
-Credit to ![vtorres](https://github.com/vtorres/gitpod-flutter) for original dockerfile
-## Gitpod Flutter
+# **Gitpod Flutter**
 
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/krlaa/gitpod-flutter)
 
 [![made-with-flutter](https://img.shields.io/badge/Made%20with-Gitpod-1f425f.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-1f425f.svg)](https://github.com/vtorres/youcheater/blob/master/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/vtorres/gitpod-flutter?style=social&label=Star)](https://github.com/vtorres/gitpod-flutter/)
+# Preface
+This is a gitpod solution to create and test apps with [Flutter](https://flutter.dev/) when you don't have access to necessary tools to do so.
 
-## Setup
-
-- Once the gitpod container loads then run the command:
-```
-flutter run -d web-server
-```
-- The command will run and give an output saying that the project is being hosted on localhost:# (localhost port #)
-- ![Access the port view](https://i.ibb.co/L9zKDRK/indication.png)
-- ![Open port in simple browser](https://i.ibb.co/mqd68v9/indication2.png)
-- *This is is a flutter web project so there will be no hot reload, to test the app with changes press r in the console/terminal and then press the reload button on the simple browser tab.*
+Using the [device_preview](https://pub.dev/packages/device_preview) package will help with the feel and understanding when working in the vnc. Take a look at the master branches sample project for an example.
 
 
-### Mobile with remote adb
 
-###### Check your mobile lan ip and feel free to use your own port configuration
+With the release of Flutter 2.0 the Flutter team has included support for Flutter desktop. Using [gitpod-vnc](https://www.gitpod.io/blog/native-ui-with-vnc/), this solution will allow teachers, tinkers, students and all to run Flutter.
 
-```
-  SMARTPHONE_LOCAL_IP = 192.168.0.10 (LAN IP)
-  INTERNAL_PORT = 5555
-```
+**There will be 2 branches in this repo:**
+- **[master](https://github.com/krlaa/gitpod-flutter)** branch will contain the pre-configuration for a sample flutter project.
+- **[dev](https://github.com/krlaa/gitpod-flutter/tree/dev)** branch which will contain the pre-configuration with just the necessary Docker files the [README.md](https://github.com/krlaa/gitpod-flutter/blob/dev/README.md) in there will go in more depth on how to configure your own project
 
-###### [Localhost command] Run the following command to switch adb on your device to work over the network using the internal port
+*I strongly recommend anyone using this repo's dev branch to install [device_preview](https://pub.dev/packages/device_preview) package into their for a better experience.*
+# Setup 
+### Once the gitpod container finishes loading up follow these steps:
+1. Open up the folder called "flutter_project" then open up the folder called "lib" the select and open main.dart.
+2. Press F5 to activate debug mode (Alternatively you can run flutter run -d linux to manually control reloads)
+3. Once debug mode loads click on the ports button on the bottom of the code editor to open "Ports View":
+![Access the port view](https://i.ibb.co/L9zKDRK/indication.png)
+*This is to access the ports section in gitpod*
+4. Hover over the port option 6080 and then you will be presented with three options. The option with the globe will open up a new tab with the vnc. Alternatively you can also click the open preview icon to use the simple browser extension to open up the vnc right in the code editor.
+![Open port in simple browser](https://i.ibb.co/mqd68v9/indication2.png)
 
-```
-  adb tcpip INTERNAL_PORT
-```
-
-###### [Localhost command] Check adb connection from localhost
-
-```
-  adb connect SMARTPHONE_LOCAL_IP:INTERNAL_PORT
-```
-
-###### [Localhost command] Starts ngrok tcp forwarding to your mobile or if you prefer you can forward a chosen port on your router to the mobile
-
-- Ngrok describes itself as “expose a local server behind a NAT or firewall to the internet.”, making our lives easier.
-
-```
-  ngrok tcp SMARTPHONE_LOCAL_IP:INTERNAL_PORT
-```
-
-###### [Gitpod command] Connect from your Gitpod to your localhost for debugging
-
-```
-  adb connect NGROK_ADDRESS:NGROK_PORT
-  flutter run -d NGROK_ADDRESS:NGROK_PORT
-```
+# Credit
+### Credit to [vtorres/gitpod-flutter](https://github.com/vtorres/gitpod-flutter) for the idea. Their solution allows running flutter web in gitpod with the limitation of no hot-reload. They also detail a solution that allows to test the app on a physical device.
+*Disclaimer: I have not tested the physical device feature but it seems like a viable solution*
